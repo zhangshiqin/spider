@@ -46,6 +46,7 @@ def get_jobs():
     try:
         divs = form.select('.list-dl')
         for div in divs:
+            # 基础信息
             jobname = div.find('a',class_='item-jobs-name').text
             hosname = div.find('a',class_='item-ent-name').text
             jobloc = div.find('span',class_='job-loc').text
@@ -55,7 +56,7 @@ def get_jobs():
             jobcontents = div.find('div',class_='job-class-content')
             posttime = jobcontents.find('span', class_='job-class-meta').text
 
-            #职位详情
+            # 职位详情
             jobhref = div.find('a',class_='show-more')['href']
             rdsoup = get_detail(jobhref)
             items = rdsoup.find('div', class_='box-info_base')
@@ -70,12 +71,14 @@ def get_jobs():
                 print('薪资为面议')
             jd = rdsoup.find('div', class_='work-content_box-detail c-box').text.strip()
 
-            #公司详情
+            # 公司详情
             hosinfo = rdsoup.find('div',class_='work-hospital_info')
             hosinfos = hosinfo.find_all('span')
             industry = hosinfos[0].text
             hoslevel = hosinfos[1].text
             stuffcount = hosinfos[2].text
+
+            # 创建dict。因为mongodb基于js
             dic = {
                 '职位':jobname.strip(),
                 '薪资最低':salary_low,
